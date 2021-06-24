@@ -1,0 +1,36 @@
+﻿<Window x:Class="KeyMapUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KeyMapUI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Open Settings.ini "
+                       VerticalAlignment="Center"/>
+            <Button Content="Open" Width="80"
+                    Click="Button_Open"/>
+            <Button Content="Save" Width="80"
+                    Click="Button_Save"/>
+            <Separator Width="10"/>
+            <Button Content="Delete" Width="60"
+                    x:Name="delete"
+                    Click="Button_Click"/>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1"
+                      HorizontalScrollBarVisibility="Visible"
+                      VerticalScrollBarVisibility="Auto">
+            <StackPanel x:Name="MainContent"
+                    Orientation="Horizontal"/>
+        </ScrollViewer>
+
+    </Grid>
+</Window>
