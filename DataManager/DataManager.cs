@@ -43,6 +43,7 @@ namespace DataManagerLibrary
         }
 
         public List<Category> Categorys { get; set; } = new List<Category>();
+        public List<Category> Joysticks { get; set; } = new List<Category>();
 
         public void Delete(Entity e)
         {
@@ -84,6 +85,42 @@ namespace DataManagerLibrary
         {
             var e = new Entity(line);
             CurrentCategory.Entitys.Add(e);
+
+            if (e.IsJoystick == true)
+            {
+                Category joyCat = FindJoyCategory(e.Value);
+                joyCat.Entitys.Add(e);
+            }
+        }
+
+        private Category FindJoyCategory(string value)
+        {
+            string joystickName = GetJoystickName(value);
+            if (string.IsNullOrWhiteSpace(joystickName) == true)
+                throw new Exception("Invalid joystick name");
+
+            foreach (var j in Joysticks)
+            {
+                if (j.Name == joystickName)
+                    return j;
+            }
+
+            Category joy = new Category() { Name = joystickName };
+            Joysticks.Add(joy);
+            return joy;
+        }
+
+        private string GetJoystickName(string value)
+        {
+            var list = value.Split(' ');
+            foreach (var item in list)
+            {
+                if (item.ToLower().Contains("device") == true)
+                {
+                    return item;
+                }
+            }
+            return "";
         }
     }
 }

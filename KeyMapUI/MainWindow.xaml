@@ -9,28 +9,49 @@
         >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Open Settings.ini "
+        <Border Padding="5" Margin="5"
+                BorderThickness="1" BorderBrush="Gray"
+                CornerRadius="3">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Open Settings.ini "
                        VerticalAlignment="Center"/>
-            <Button Content="Open" Width="80"
+                <Button Content="Open" Width="80"
                     Click="Button_Open"/>
-            <Button Content="Save" Width="80"
+                <Button Content="Save" Width="80"
                     Click="Button_Save"/>
-            <Separator Width="10"/>
-            <Button Content="Delete" Width="60"
+                <Separator Width="10"/>
+                <Button Content="Delete" Width="60"
                     x:Name="delete"
                     Click="Button_Click"/>
-        </StackPanel>
 
-        <ScrollViewer Grid.Row="1"
+                <Separator Width="100"/>
+                <ComboBox x:Name="deviceList" Width="250">
+                </ComboBox>
+                <Button Content="ID Change" Width="60"
+                        x:Name="change"
+                        Click="Button_Click"/>
+            </StackPanel>
+        </Border>
+
+        <TabControl  Grid.Row="1" Padding="5" Margin="5">
+            <TabItem Header="Key List" Selector.Selected="TabItem_Selected">
+                <ScrollViewer
                       HorizontalScrollBarVisibility="Visible"
                       VerticalScrollBarVisibility="Auto">
-            <StackPanel x:Name="MainContent"
-                    Orientation="Horizontal"/>
-        </ScrollViewer>
+                    <StackPanel x:Name="MainContent" Orientation="Horizontal"/>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Joystick" Selector.Selected="TabItem_Selected">
+                <ScrollViewer HorizontalScrollBarVisibility="Visible"
+                      VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="JoyContent" Orientation="Horizontal"/>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
 
     </Grid>
 </Window>

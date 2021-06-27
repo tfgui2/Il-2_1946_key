@@ -98,6 +98,10 @@
       <Project>{54049236-3ddc-4d0c-bb54-cdec09b58c11}</Project>
       <Name>DataManagerLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DeviceID\DeviceIDLibrary.csproj">
+      <Project>{170d9903-cf9f-4281-8ebf-ee156a5c07d2}</Project>
+      <Name>DeviceIDLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

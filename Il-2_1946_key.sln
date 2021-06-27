@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataManagerLibrary", "DataM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyMapUI", "KeyMapUI\KeyMapUI.csproj", "{34C3DAB2-FFA6-47AC-ACEC-A42A3F907422}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceIDLibrary", "DeviceID\DeviceIDLibrary.csproj", "{170D9903-CF9F-4281-8EBF-EE156A5C07D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{34C3DAB2-FFA6-47AC-ACEC-A42A3F907422}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34C3DAB2-FFA6-47AC-ACEC-A42A3F907422}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34C3DAB2-FFA6-47AC-ACEC-A42A3F907422}.Release|Any CPU.Build.0 = Release|Any CPU
+		{170D9903-CF9F-4281-8EBF-EE156A5C07D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{170D9903-CF9F-4281-8EBF-EE156A5C07D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{170D9903-CF9F-4281-8EBF-EE156A5C07D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{170D9903-CF9F-4281-8EBF-EE156A5C07D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace KeyMapUI
 {
@@ -23,6 +24,16 @@ namespace KeyMapUI
         public MainWindow()
         {
             InitializeComponent();
+
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(5);
+            timer.Tick += Timer_Tick;
+            timer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            UpdateDeviceList();
         }
 
         DataManagerLibrary.DataManager DM { get; set; }
@@ -62,6 +73,13 @@ namespace KeyMapUI
                 var temp = MakeCategoryGroup(cat);
                 MainContent.Children.Add(temp);
             }
+
+            JoyContent.Children.Clear();
+            foreach (var cat in DM.Joysticks)
+            {
+                var temp = MakeJoystickSection(cat);
+                JoyContent.Children.Add(temp);
+            }
         }
 
         private List<CheckBox> _allCheckBox = new List<CheckBox>();
@@ -70,6 +88,7 @@ namespace KeyMapUI
             GroupBox gb = new GroupBox();
             gb.Tag = category;
 
+            // group header
             StackPanel headerStack = new StackPanel() { Orientation = Orientation.Horizontal };
             headerStack.Children.Add(new TextBlock() { Text = category.Name });
 
@@ -79,6 +98,7 @@ namespace KeyMapUI
 
             gb.Header = headerStack;
 
+            // group content
             StackPanel panel = new StackPanel() { Orientation = Orientation.Vertical, Width = 250 };
             gb.Content = panel;
 
@@ -91,6 +111,58 @@ namespace KeyMapUI
                 _allCheckBox.Add(temp);
             }
             return gb;
+        }
+
+        private GroupBox MakeJoystickSection(DataManagerLibrary.Category category)
+        {
+            GroupBox gb = new GroupBox();
+            // group header
+            StackPanel headerStack = new StackPanel() { Orientation = Orientation.Horizontal };
+            headerStack.Children.Add(new TextBlock() { Text = category.Name });
+            CheckBox check = new CheckBox() { IsChecked = false, Content = "" };
+            check.Checked += Check_Checked;
+            check.Unchecked += Check_Unchecked;
+            headerStack.Children.Add(check);
+            gb.Header = headerStack;
+
+            // group content
+            StackPanel panel = new StackPanel() { Orientation = Orientation.Vertical, Width = 250 };
+            gb.Content = panel;
+            check.Tag = panel;
+
+            foreach (var item in category.Entitys)
+            {
+                if (item.IsJoystick == true)
+                {
+                    CheckBox temp = new CheckBox();
+                    temp.Content = item.Line;
+                    temp.Tag = item;
+                    panel.Children.Add(temp);
+                    _allCheckBox.Add(temp);
+                }
+            }
+
+            return gb;
+        }
+
+        private void Check_Unchecked(object sender, RoutedEventArgs e)
+        {
+            CheckBox cb = sender as CheckBox;
+            StackPanel panel = cb.Tag as StackPanel;
+            foreach (CheckBox item in panel.Children)
+            {
+                item.IsChecked = false;
+            }
+        }
+
+        private void Check_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox cb = sender as CheckBox;
+            StackPanel panel = cb.Tag as StackPanel;
+            foreach (CheckBox item in panel.Children)
+            {
+                item.IsChecked = true;
+            }
         }
 
         private void SortButton_Click(object sender, RoutedEventArgs e)
@@ -117,6 +189,10 @@ namespace KeyMapUI
 
                 UpdateUI();
             }
+            else if (b.Name == "change")
+            {
+                ChangeJoystickID();
+            }
         }
 
         private List<DataManagerLibrary.Entity> FindCheckedEntity()
@@ -130,6 +206,59 @@ namespace KeyMapUI
             }
 
             return list;
+        }
+
+        DeviceIDLibrary.DeviceIDHelper _deviceIDHelper = new DeviceIDLibrary.DeviceIDHelper();
+        private void UpdateDeviceList()
+        {
+            var list = _deviceIDHelper.GetDeviceList();
+            if (_deviceIDHelper.IsChanged == true)
+                deviceList.ItemsSource = list;
+        }
+
+        private void ChangeJoystickID()
+        {
+            int index = deviceList.SelectedIndex;
+            if (index < 0)
+                return;
+
+            string dstName = $"JoystickDevice{index}";
+            foreach (var c in _allCheckBox)
+            {
+                if (c.IsChecked == false)
+                    continue;
+
+                DataManagerLibrary.Entity e = c.Tag as DataManagerLibrary.Entity;
+                string temp = e.Value;
+                e.Value = SwapJoyName(temp, dstName);
+                c.Content = e.Line;
+            }
+
+            UpdateCheckBoxContent();
+        }
+
+        private void UpdateCheckBoxContent()
+        {
+            foreach (var c in _allCheckBox)
+            {
+                DataManagerLibrary.Entity e = c.Tag as DataManagerLibrary.Entity;
+                c.Content = e.Line;
+            }
+        }
+
+        private string SwapJoyName(string EntityValue, string joystickName)
+        {
+            var temp = EntityValue.Split(' ');
+            temp[1] = joystickName;
+            return string.Join(" ", temp);
+        }
+
+        private void TabItem_Selected(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in _allCheckBox)
+            {
+                item.IsChecked = false;
+            }
         }
     }
 }

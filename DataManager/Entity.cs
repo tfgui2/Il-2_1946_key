@@ -22,5 +22,13 @@ namespace DataManagerLibrary
             Value = temp[0];
             Key = temp[1];
         }
+
+        public bool IsJoystick
+        {
+            get
+            {
+                return Value.ToLower().Contains("joystickdevice");
+            }
+        }
     }
 }
